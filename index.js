@@ -17,7 +17,7 @@ enter.addEventListener("click", (e) => {
     checkOhmValue(form.elements[1].value, form.elements[2].value);
     calculateValue(e);
     changeColor(e);
-    clearForm();
+    setTimeout(clearForm, 2000);
   }
 });
 
