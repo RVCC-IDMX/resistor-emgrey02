@@ -30,7 +30,6 @@
       --white: #fff;
       --gold: #d4af37;
       --silver: #bab7c3;
-
     }
 
     body {
@@ -54,16 +53,54 @@
       margin: 0 auto;
     }
 
-    .selection {
+    /* .selection {
+      flex-grow: 1;
+    } */
+
+    .big-container {
+      width: max-width;
+      display: flex;
+      flex-direction: column-reverse;
       flex-grow: 1;
     }
 
+    .form-container {
+      font-size: 1.4em;
+      align-self: center;
+      margin: 0.5rem;
+    }
+
+    fieldset {
+      padding: 1.5em;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      background-color: #222;
+      color: white;
+      border: 5px double rgb(145, 97, 177);
+    }
+
+    legend {
+      background-color: #222;
+      padding: 0.2em;
+      border: 3px double rgb(145, 97, 177);
+    }
+
+    form input,
+    form select,
+    button {
+      font-size: 1em;
+      padding: 0.2em;
+      min-width: 50px;
+      width: 50px;
+      border: 1px solid black;
+    }
+
     .lookup {
-      flex-grow: 1;
       font-size: 1.125rem;
       align-self: center;
       margin: 0.5rem;
-      outline: 3px solid #222;
+      border: 5px double rgb(145, 97, 177);
       text-align: center;
       width: 20rem;
       padding: 0.25rem;
@@ -101,7 +138,7 @@
       grid-template-columns: repeat(8, 1fr);
     }
 
-    .ceramic > * {
+    .ceramic>* {
       width: 0.75rem;
     }
 
@@ -202,10 +239,10 @@
       }
     }
 
-    @media screen and (min-width: 60rem) {
-      .calculator {
-        max-width: 90rem;
-        padding: 0 10%;
+    @media screen and (max-width: 45rem) {
+
+      fieldset {
+        padding: 1em 0.3em;
       }
     }
   </style>
@@ -276,18 +313,54 @@
         </div>
       </section>
     </div>
-    <div class="lookup">
-      <div class="resistor">
-        <div class="wire wire--1"></div>
-        <div class="ceramic">
-          <div id="b0" class="band red"></div>
-          <div id="b1" class="band green"></div>
-          <div id="b2" class="band violet"></div>
-          <div id="b3" class="band gold"></div>
-        </div>
-        <div class="wire wire--2"></div>
+    <div class="big-container">
+      <div class="form-container">
+        <form>
+          <fieldset>
+            <legend>Choose your own values:</legend>
+
+            <label for="resistor-value" name="resistor-value">Resistor value: </label>
+            <input type="text" name="resistor-value" id="resistor-value" maxlength='4'>
+
+            <select name='tag' id='tag'>
+              <option selected value=""> </option>
+              <option value="k">k</option>
+              <option value='M'>M</option>
+              <option value='G'>G</option>
+            </select>
+
+            <span>Ohms</span>
+
+            <label for="tolerance-value" name="tolerance-value">±</label>
+            <select name="tol" id="tol">
+              <option selected> </option>
+              <option value='1%'>1%</option>
+              <option value='2%'>2%</option>
+              <option value='0.5%'>0.5%</option>
+              <option value='0.25%'>0.25%</option>
+              <option value='0.1%'>0.1%</option>
+              <option value='0.05%'>0.05%</option>
+              <option value='5%'>5%</option>
+              <option value='10%'>10%</option>
+            </select>
+
+            <button id="enter">Enter</button>
+          </fieldset>
+        </form>
       </div>
-      <div class="answer">Resistor value: 250M Ohms ±5%</div>
+      <div class="lookup">
+        <div class="resistor">
+          <div class="wire wire--1"></div>
+          <div class="ceramic">
+            <div id="b0" class="band red"></div>
+            <div id="b1" class="band green"></div>
+            <div id="b2" class="band violet"></div>
+            <div id="b3" class="band gold"></div>
+          </div>
+          <div class="wire wire--2"></div>
+        </div>
+        <div class="answer">Resistor value: 250M Ohms ±5%</div>
+      </div>
     </div>
   </div>
   <script src="index.js" type="module"></script>
