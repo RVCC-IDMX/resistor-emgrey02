@@ -220,7 +220,7 @@ function getValues(val) {
     num = val;
   }
   //get bare num for band values
-  let parsedVal = longVal.slice(0, 2);
+  let parsedVal = longVal?.slice(0, 2) ? longVal.slice(0, 2) : val.slice(0, 2);
 
   //band values
   band1 = parsedVal[0];
@@ -233,7 +233,7 @@ function getValues(val) {
 
   //if it doesn't have a decimal, or for decimals w/ a tag
   if (!num.includes(".") || tag) {
-    multiplier = longVal / parsedVal;
+    multiplier = longVal ? longVal / parsedVal : val / parsedVal;
   }
 
   return { band1: band1, band2: band2, multiplier: multiplier };
@@ -247,7 +247,6 @@ function getValues(val) {
  */
 function getBandColors(resistorValue, toleranceValue) {
   let values = getValues(resistorValue);
-  console.log(values);
   let color1 = getBandColor(values.band1);
   let color2 = getBandColor(values.band2);
   let multiplier = getMultiplierColor(values.multiplier);

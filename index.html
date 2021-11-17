@@ -70,6 +70,11 @@
       margin: 0.5rem;
     }
 
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
     fieldset {
       padding: 1.5em;
       display: flex;
@@ -84,6 +89,12 @@
       background-color: #222;
       padding: 0.2em;
       border: 3px double rgb(145, 97, 177);
+    }
+
+    #alert {
+      color: rgb(255, 0, 0);
+      height: 30px;
+      text-align: center;
     }
 
     form input,
@@ -316,11 +327,12 @@
     <div class="big-container">
       <div class="form-container">
         <form>
+          <div id="alert"></div>
           <fieldset>
             <legend>Choose your own values:</legend>
 
             <label for="resistor-value" name="resistor-value">Resistor value: </label>
-            <input type="text" name="resistor-value" id="resistor-value" maxlength='4'>
+            <input type="text" name="resistor-value" id="resistor-value" maxlength='4' required>
 
             <select name='tag' id='tag'>
               <option selected value=""> </option>
@@ -333,7 +345,7 @@
 
             <label for="tolerance-value" name="tolerance-value">±</label>
             <select name="tol" id="tol">
-              <option selected> </option>
+              <option selected value=''> </option>
               <option value='1%'>1%</option>
               <option value='2%'>2%</option>
               <option value='0.5%'>0.5%</option>

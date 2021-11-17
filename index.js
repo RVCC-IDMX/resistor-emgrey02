@@ -13,10 +13,12 @@ const form = document.querySelector("form");
 
 enter.addEventListener("click", (e) => {
   e.preventDefault();
-  checkOhmValue(form.elements[1].value, form.elements[2].value);
-  calculateValue(e);
-  changeColor(e);
-  clearForm();
+  if (checkRequiredFields()) {
+    checkOhmValue(form.elements[1].value, form.elements[2].value);
+    calculateValue(e);
+    changeColor(e);
+    clearForm();
+  }
 });
 
 allButtons.forEach((button) => {
@@ -30,12 +32,30 @@ function clearForm() {
   }
 }
 
+function checkRequiredFields() {
+  let alert = document.querySelector("#alert");
+  if (form.elements[1].value === "") {
+    alert.innerText = "You must enter a resistor value.";
+    setTimeout(() => {
+      alert.innerText = "";
+    }, 3000);
+    return false;
+  } else if (form.elements[3].value === "") {
+    alert.innerText = "You must select a tolerance value";
+    setTimeout(() => {
+      alert.innerText = "";
+    }, 3000);
+    return false;
+  }
+  return true;
+}
+
 function checkOhmValue(val = 0, tag = "") {
   //if it's a decimal
   if (val.toString().includes(".")) {
     let sides = val.toString().split(".");
     //1.3   if 1.45 then 1.5
-    if (sides[0] !== 0) {
+    if (sides[0] !== "0") {
       if (+sides[1] > 9) {
         let roundedVal = Math.round(sides[1] / 10);
         sides[1] = roundedVal;
@@ -48,22 +68,34 @@ function checkOhmValue(val = 0, tag = "") {
       }
     }
     //if the number is more then 2 digits + not a decimal
-  } else if (val.toString().length > 2) {
+  } else if (val.toString().length > 2 && !val.toString().includes(".")) {
     let roundedVal;
+
+    //if ex)5609, 5439, 3301
+    if (val.toString().length === 4) {
+      val = roundedVal ? roundedVal : val;
+      roundedVal = Math.round(val / 10);
+      checkOhmValue(roundedVal, tag);
+    }
     //if ex)324
     if (val[2] !== "0" && val[1] !== "0") {
+      val = roundedVal ? roundedVal : val;
       roundedVal = Math.round(val / 10) * 10;
       form.elements[1].value = roundedVal;
     }
     //if ex)305
-    if (val.toString()[1] === "0" && val.toString()[2] !== undefined) {
+    else if (val.toString()[1] === "0" && val.toString()[2] !== undefined) {
+      val = roundedVal ? roundedVal : val;
       roundedVal = Math.floor(val / 10) * 10;
       form.elements[1].value = roundedVal;
     }
-    //if ex)5609, 5439, 3301
-    if (val.toString().length === 4) {
-      roundedVal = Math.round(val / 10);
-      checkOhmValue(roundedVal);
+    //can't be length of 3 if it has 'G' tag
+    if (tag === "G") {
+      if (val.toString()[2] !== undefined) {
+        val = roundedVal ? roundedVal : val;
+        roundedVal = Math.round(val / 10);
+        form.elements[1].value = roundedVal;
+      }
     }
   }
 }
